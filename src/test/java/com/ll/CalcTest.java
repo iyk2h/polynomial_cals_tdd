@@ -20,9 +20,8 @@ class CalcTest {
     }
 
     @Test
-    @DisplayName("2 + 1 == 3")
-    @
+    @DisplayName("2 - 1 == 1")
     void t3() {
-
+        assertThat(Calc.run("2 - 1")).isEqualTo(1);
     }
 }
