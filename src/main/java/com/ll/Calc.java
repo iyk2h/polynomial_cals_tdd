@@ -3,14 +3,44 @@ package com.ll;
 public class Calc {
 
     public static int run(String input) {
+
         input = input.replaceAll("- ", "+ -");
 
-        String[] arr = input.split(" \\+ ");
+        boolean needToMulti = input.contains("*");
+        boolean needToPlus = input.contains("+");
 
-        int sum = 0;
-        for (int i = 0; i < arr.length; i++) {
-            sum += Integer.parseInt(arr[i]);
+        boolean needToCompound = needToMulti && needToPlus;
+
+        if(!input.contains(" ")){
+            return Integer.parseInt(input);
         }
-        return sum;
+
+        if (needToCompound) {
+            String[] arr = input.split(" \\+ ");
+            int sum = 0;
+            for (String s : arr) {
+                sum += run(s);
+            }
+            return sum;
+
+        } else if (needToPlus) {
+            String[] arr = input.split(" \\+ ");
+
+            int sum = 0;
+            for (String s : arr) {
+                sum += Integer.parseInt(s);
+            }
+            return sum;
+        } else if (needToMulti) {
+            String[] arr = input.split(" \\* ");
+
+            int sum = 1;
+            for (String s : arr) {
+                sum *= Integer.parseInt(s);
+            }
+            return sum;
+        }
+
+        throw new RuntimeException("올바른 계산식이 아닙니다.");
     }
 }
