@@ -3,6 +3,7 @@ package com.ll;
 public class Calc {
 
     public static int run(String input) {
+        input = stripOuterBrachets(input);
 
         input = input.replaceAll("- ", "+ -");
 
@@ -42,5 +43,12 @@ public class Calc {
         }
 
         throw new RuntimeException("올바른 계산식이 아닙니다.");
+    }
+
+    private static String stripOuterBrachets(String input) {
+        if (input.charAt(0) == '(' && input.charAt(input.length() - 1) == ')') {
+            input = input.substring(1,input.length() - 1);
+        }
+        return input;
     }
 }
