@@ -7,16 +7,40 @@ public class Calc {
 
         input = input.replaceAll("- ", "+ -");
 
+        if (!input.contains(" ")) {
+            return Integer.parseInt(input);
+        }
+
         boolean needToMulti = input.contains("*");
         boolean needToPlus = input.contains("+");
 
         boolean needToCompound = needToMulti && needToPlus;
+        boolean needToSplit = input.contains("(") || input.contains(")");
 
-        if(!input.contains(" ")){
-            return Integer.parseInt(input);
-        }
+        if (needToSplit) {
+            int bracketsCount = 0;
+            int splitPointIndex = -1;
 
-        if (needToCompound) {
+            for ( int i = 0; i < input.length(); i++ ) {
+                if ( input.charAt(i) == '(' ) {
+                    bracketsCount++;
+                }
+                else if ( input.charAt(i) == ')' ) {
+                    bracketsCount--;
+                }
+
+                if ( bracketsCount == 0 ) {
+                    splitPointIndex = i;
+                    break;
+                }
+            }
+            String firstInput = input.substring(0, splitPointIndex + 1);
+            String secondInput = input.substring(splitPointIndex + 4);
+
+            input = Calc.run(firstInput)  + " " + input.charAt(splitPointIndex + 2) + " " +  Calc.run(secondInput);
+
+            return Calc.run(input);
+        } else if (needToCompound) {
             String[] arr = input.split(" \\+ ");
             int sum = 0;
             for (String s : arr) {
@@ -46,7 +70,7 @@ public class Calc {
     }
 
     private static String stripOuterBrachets(String input) {
-        if (input.charAt(0) == '(' && input.charAt(input.length() - 1) == ')') {
+        while (input.charAt(0) == '(' && input.charAt(input.length() - 1) == ')') {
             input = input.substring(1,input.length() - 1);
         }
         return input;
