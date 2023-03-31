@@ -18,26 +18,23 @@ public class Calc {
         boolean needToSplit = input.contains("(") || input.contains(")");
 
         if (needToSplit) {
-            int bracketsCount = 0;
-            int splitPointIndex = -1;
+            int startIdx = -1;
+            int endIdx = 0;
 
-            for ( int i = 0; i < input.length(); i++ ) {
-                if ( input.charAt(i) == '(' ) {
-                    bracketsCount++;
-                }
-                else if ( input.charAt(i) == ')' ) {
-                    bracketsCount--;
-                }
-
-                if ( bracketsCount == 0 ) {
-                    splitPointIndex = i;
-                    break;
+            for (int i = 0; i < input.length(); i++) {
+                if (input.charAt(i) == '(') {
+                    if (startIdx == -1) {
+                        startIdx = i;
+                    }
+                } else if (input.charAt(i) == ')') {
+                    endIdx = i;
                 }
             }
-            String firstInput = input.substring(0, splitPointIndex + 1);
-            String secondInput = input.substring(splitPointIndex + 4);
+            String firstInput = input.substring(0, startIdx);
+            String midInput = input.substring(startIdx, endIdx + 1);
+            String lastInput = input.substring(endIdx + 1);
 
-            input = Calc.run(firstInput)  + " " + input.charAt(splitPointIndex + 2) + " " +  Calc.run(secondInput);
+            input = firstInput + Calc.run(midInput) + lastInput;
 
             return Calc.run(input);
         } else if (needToCompound) {
@@ -71,7 +68,7 @@ public class Calc {
 
     private static String stripOuterBrachets(String input) {
         while (input.charAt(0) == '(' && input.charAt(input.length() - 1) == ')') {
-            input = input.substring(1,input.length() - 1);
+            input = input.substring(1, input.length() - 1);
         }
         return input;
     }
