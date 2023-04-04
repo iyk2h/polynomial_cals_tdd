@@ -169,8 +169,14 @@ public class CalcTest {
     }
 
     @Test
-    @DisplayName("3 * 1 + (1 - (4 * 1 - (1 - 1))) == 0")
+    @DisplayName("-(9 + 1) * -(9 + 1) == 100")
     void t26() {
+        assertThat(Calc.run("-(9 + 1) * -(9 + 1)")).isEqualTo(100);
+    }
+
+    @Test
+    @DisplayName("3 * 1 + (1 - (4 * 1 - (1 - 1))) == 0")
+    void t27() {
         assertThat(Calc.run("3 * 1 + (1 - (4 * 1 - (1 - 1)))")).isEqualTo(0);
     }
 }

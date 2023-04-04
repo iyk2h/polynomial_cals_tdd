@@ -3,6 +3,7 @@ package com.ll;
 public class Calc {
 
     public static int run(String input) {
+        System.out.println(input);
         input = stripOuterBrachets(input);
 
         input = input.replaceAll("- ", "+ -");
@@ -21,20 +22,27 @@ public class Calc {
             int startIdx = -1;
             int endIdx = 0;
 
+            int cntOpen = 0;
+
             for (int i = 0; i < input.length(); i++) {
                 if (input.charAt(i) == '(') {
+                    cntOpen++;
                     if (startIdx == -1) {
                         startIdx = i;
                     }
                 } else if (input.charAt(i) == ')') {
-                    endIdx = i;
+                    cntOpen--;
+                    if (cntOpen == 0) {
+                        endIdx = i;
+
+                        String firstInput = input.substring(0, startIdx);
+                        String midInput = input.substring(startIdx, endIdx + 1);
+                        String lastInput = input.substring(endIdx + 1);
+
+                        input = firstInput + Calc.run(midInput) + lastInput;
+                    }
                 }
             }
-            String firstInput = input.substring(0, startIdx);
-            String midInput = input.substring(startIdx, endIdx + 1);
-            String lastInput = input.substring(endIdx + 1);
-
-            input = firstInput + Calc.run(midInput) + lastInput;
 
             return Calc.run(input);
         } else if (needToCompound) {
