@@ -4,6 +4,10 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CalcTest {
     @Test
@@ -175,8 +179,40 @@ public class CalcTest {
     }
 
     @Test
-    @DisplayName("3 * 1 + (1 - (4 * 1 - (1 - 1))) == 0")
+    @DisplayName("-(8 + 2) * -(7 + 3) + 5 == 105")
     void t27() {
+        assertThat(Calc.run("-(8 + 2) * -(7 + 3) + 5")).isEqualTo(105);
+    }
+
+    @Test
+    @DisplayName("3 * 1 + (1 - (4 * 1 - (1 - 1))) == 0")
+    void t28() {
         assertThat(Calc.run("3 * 1 + (1 - (4 * 1 - (1 - 1)))")).isEqualTo(0);
+    }
+
+    @Test
+    @DisplayName("(3 + 5)) == Expected")
+    void t29() {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            Calc.run("(3 + 5))");
+        });
+
+        String expectedMessage = "올바른 계산식이 아닙니다.";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(actualMessage, actualMessage);
+    }
+
+    @Test
+    @DisplayName("((3 + 5) + 10 * (199 + 1) == Expected")
+    void t30() {
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            Calc.run("((3 + 5) + 10 * (199 + 1)");
+        });
+
+        String expectedMessage = "올바른 계산식이 아닙니다.";
+        String actualMessage = exception.getMessage();
+
+        assertEquals(actualMessage, actualMessage);
     }
 }

@@ -16,7 +16,8 @@ public class Calc {
         boolean needToPlus = input.contains("+");
 
         boolean needToCompound = needToMulti && needToPlus;
-        boolean needToSplit = input.contains("(") || input.contains(")");
+        boolean needToSplit = input.contains("(") && input.contains(")");
+        boolean isSingleBracket = input.contains("(") || input.contains(")");
 
         if (needToSplit) {
             int startIdx = -1;
@@ -43,9 +44,14 @@ public class Calc {
                     }
                 }
             }
-
             return Calc.run(input);
-        } else if (needToCompound) {
+        }
+
+        if (isSingleBracket) {
+            throw new RuntimeException("올바른 계산식이 아닙니다.");
+        }
+
+        if (needToCompound) {
             String[] arr = input.split(" \\+ ");
             int sum = 0;
             for (String s : arr) {
